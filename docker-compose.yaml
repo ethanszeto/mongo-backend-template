@@ -1,0 +1,26 @@
+#local dev env only
+services:
+  app:
+    build: .
+    container_name: project-backend
+    env_file:
+      - .env
+    command: npm start
+    depends_on:
+      - mongodb
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    volumes:
+      - .:/app
+  mongodb:
+    image: mongo:latest
+    container_name: project-database
+    env_file:
+      - .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_INITDB_ROOT_PASSWORD}
+    ports:
+      - ${MONGODB_INITDB_PORT}:${MONGODB_INITDB_PORT}
+    volumes:
+      - ./.database:/data/db
